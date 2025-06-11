@@ -236,128 +236,138 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-green-200 p-4">
+      <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-slate-200 p-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" onClick={onBack}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              返回
+          <div className="flex items-center space-x-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="hover:bg-slate-100"
+            >
+              <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>
-              <h2 className="font-semibold text-green-800">{scenario.title}</h2>
-              <p className="text-sm text-green-600">第 {round}/10 轮</p>
+              <h2 className="font-semibold text-slate-800">{scenario.title}</h2>
+              <p className="text-sm text-slate-600">第 {round}/10 轮</p>
             </div>
           </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="text-right">
-              <p className="text-sm text-green-600">老板满意度</p>
-              <div className="flex items-center space-x-2">
-                <Progress value={currentScore} className="w-24" />
-                <Badge variant={currentScore >= 70 ? "default" : currentScore >= 40 ? "secondary" : "destructive"}>
-                  {currentScore}/100
-                </Badge>
-              </div>
+          <div className="text-right">
+            <div className="flex items-center space-x-2">
+              <p className="text-sm text-slate-600">老板满意度</p>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={resetGame}
+                className="hover:bg-slate-100"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
             </div>
-            <Button variant="outline" size="sm" onClick={resetGame}>
-              <RotateCcw className="w-4 h-4 mr-2" />
-              重新开始
-            </Button>
+            <div className="flex items-center space-x-2 mt-1">
+              <Progress value={currentScore} className="w-24" />
+              <span className="text-sm font-medium text-slate-700">{currentScore}/100</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Chat Area */}
+      {/* Messages */}
       <div className="max-w-4xl mx-auto p-4">
-        <div className="bg-white rounded-lg shadow-lg h-[70vh] flex flex-col">
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((message, index) => (
-              <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+        <div className="space-y-4 mb-6">
+          {messages.map((message, index) => (
+            <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className="flex items-start space-x-2 max-w-3xl">
+                {message.role === "boss" && <BossAvatar />}
                 <div
-                  className={`flex items-end space-x-2 max-w-xs lg:max-w-md ${message.role === "user" ? "flex-row-reverse space-x-reverse" : ""}`}
+                  className={`p-3 rounded-lg ${
+                    message.role === "user" 
+                      ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" 
+                      : "bg-white/80 backdrop-blur-sm text-slate-800 border border-slate-200"
+                  }`}
                 >
-                  {message.role === "boss" ? <BossAvatar /> : <UserAvatar />}
-                  <div
-                    className={`px-4 py-2 rounded-lg ${
-                      message.role === "user" ? "bg-green-500 text-white" : "bg-gray-200 text-gray-800"
-                    }`}
-                  >
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="flex items-end space-x-2">
-                  <BossAvatar />
-                  <div className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div
-                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.1s" }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Options or Game Over */}
-          <div className="border-t border-gray-200 p-4">
-            {gameOver ? (
-              <Card className={`${gameResult === "win" ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
-                <CardContent className="pt-6 text-center">
-                  <div className="text-4xl mb-4">{gameResult === "win" ? "🎉" : "😅"}</div>
-                  <h3 className={`text-xl font-bold mb-2 ${gameResult === "win" ? "text-green-800" : "text-red-800"}`}>
-                    {gameResult === "win" ? "恭喜过关！" : "挑战失败"}
-                  </h3>
-                  <p className={`mb-4 ${gameResult === "win" ? "text-green-600" : "text-red-600"}`}>
-                    {gameResult === "win"
-                      ? `你成功让老板满意度达到了${currentScore}分！职场高手就是你！`
-                      : `老板满意度只有${currentScore}分，还需要继续努力哦！`}
+                  <p className="text-sm">{message.content}</p>
+                  <p className="text-xs mt-1 opacity-70">
+                    {message.timestamp.toLocaleTimeString()}
                   </p>
-                  <div className="space-x-2">
-                    <Button onClick={resetGame} className="bg-green-600 hover:bg-green-700">
-                      再来一次
-                    </Button>
-                    <Button variant="outline" onClick={onBack}>
-                      选择其他场景
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600 mb-3">选择你的回复：</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {options.map((option, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="text-left h-auto p-3 whitespace-normal hover:bg-green-50 hover:border-green-300"
-                      onClick={() => handleOptionSelect(option)}
-                      disabled={isLoading}
-                    >
-                      {option.text}
-                    </Button>
-                  ))}
                 </div>
+                {message.role === "user" && <UserAvatar />}
               </div>
-            )}
-          </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
         </div>
+
+        {/* Game Over */}
+        {gameOver && (
+          <div className="mb-6">
+            <Card className={`${
+              gameResult === "win" 
+                ? "bg-emerald-50 border-emerald-200" 
+                : "bg-red-50 border-red-200"
+            } backdrop-blur-sm`}>
+              <CardContent className="pt-6 text-center">
+                <h3 className={`text-xl font-bold mb-2 ${
+                  gameResult === "win" ? "text-emerald-800" : "text-red-800"
+                }`}>
+                  {gameResult === "win" ? "🎉 成功哄好老板！" : "😵 游戏结束"}
+                </h3>
+                <p className={`mb-4 ${
+                  gameResult === "win" ? "text-emerald-600" : "text-red-600"
+                }`}>
+                  {gameResult === "win"
+                    ? `恭喜你！经过 ${round} 轮对话，老板满意度达到了 ${currentScore} 分！`
+                    : `很遗憾，${round} 轮对话后老板满意度只有 ${currentScore} 分。`}
+                </p>
+                <div className="space-x-2">
+                  <Button 
+                    onClick={resetGame} 
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+                  >
+                    重新开始
+                  </Button>
+                  <Button variant="outline" onClick={onBack} className="border-slate-300 hover:bg-slate-50">
+                    返回主页
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Options */}
+        {!gameOver && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {options.map((option, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                onClick={() => handleOptionSelect(option)}
+                disabled={isLoading}
+                className="text-left h-auto p-3 whitespace-normal hover:bg-indigo-50 hover:border-indigo-300 border-slate-200 bg-white/70 backdrop-blur-sm"
+              >
+                <span className="text-sm">{option.text}</span>
+                <span
+                  className={`ml-2 text-xs px-2 py-1 rounded ${
+                    option.score > 0
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {option.score > 0 ? "+" : ""}{option.score}
+                </span>
+              </Button>
+            ))}
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="flex justify-center mt-4">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+          </div>
+        )}
       </div>
     </div>
   )
