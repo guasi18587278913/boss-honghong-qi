@@ -236,60 +236,63 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-slate-200 p-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onBack}
-              className="hover:bg-slate-100"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h2 className="font-semibold text-slate-800">{scenario.title}</h2>
-              <p className="text-sm text-slate-600">第 {round}/10 轮</p>
+      <div className="border-b border-gray-800 bg-black/95 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onBack}
+                className="hover:bg-gray-800 text-gray-300 hover:text-white"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                返回
+              </Button>
+              <div>
+                <h2 className="font-semibold text-white">{scenario.title}</h2>
+                <p className="text-sm text-gray-400">第 {round}/10 轮</p>
+              </div>
             </div>
-          </div>
-          <div className="text-right">
-            <div className="flex items-center space-x-2">
-              <p className="text-sm text-slate-600">老板满意度</p>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm text-gray-400">老板满意度</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <Progress value={currentScore} className="w-32 h-2" />
+                  <span className="text-sm font-medium text-white">{currentScore}/100</span>
+                </div>
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={resetGame}
-                className="hover:bg-slate-100"
+                className="hover:bg-gray-800 text-gray-300 hover:text-white"
               >
                 <RotateCcw className="h-4 w-4" />
               </Button>
-            </div>
-            <div className="flex items-center space-x-2 mt-1">
-              <Progress value={currentScore} className="w-24" />
-              <span className="text-sm font-medium text-slate-700">{currentScore}/100</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="max-w-4xl mx-auto p-4">
-        <div className="space-y-4 mb-6">
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="space-y-6 mb-8">
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className="flex items-start space-x-2 max-w-3xl">
+              <div className="flex items-start space-x-3 max-w-3xl">
                 {message.role === "boss" && <BossAvatar />}
                 <div
-                  className={`p-3 rounded-lg ${
+                  className={`p-4 rounded-2xl ${
                     message.role === "user" 
-                      ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" 
-                      : "bg-white/80 backdrop-blur-sm text-slate-800 border border-slate-200"
+                      ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" 
+                      : "bg-gray-900 text-white border border-gray-700"
                   }`}
                 >
-                  <p className="text-sm">{message.content}</p>
-                  <p className="text-xs mt-1 opacity-70">
+                  <p className="text-sm leading-relaxed">{message.content}</p>
+                  <p className="text-xs mt-2 opacity-70">
                     {message.timestamp.toLocaleTimeString()}
                   </p>
                 </div>
@@ -302,33 +305,38 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
 
         {/* Game Over */}
         {gameOver && (
-          <div className="mb-6">
+          <div className="mb-8">
             <Card className={`${
               gameResult === "win" 
-                ? "bg-emerald-50 border-emerald-200" 
-                : "bg-red-50 border-red-200"
+                ? "bg-green-900/30 border-green-700" 
+                : "bg-red-900/30 border-red-700"
             } backdrop-blur-sm`}>
-              <CardContent className="pt-6 text-center">
-                <h3 className={`text-xl font-bold mb-2 ${
-                  gameResult === "win" ? "text-emerald-800" : "text-red-800"
+              <CardContent className="p-8 text-center">
+                <div className="text-6xl mb-4">{gameResult === "win" ? "🎉" : "😵"}</div>
+                <h3 className={`text-2xl font-bold mb-4 ${
+                  gameResult === "win" ? "text-green-400" : "text-red-400"
                 }`}>
-                  {gameResult === "win" ? "🎉 成功哄好老板！" : "😵 游戏结束"}
+                  {gameResult === "win" ? "成功哄好老板！" : "游戏结束"}
                 </h3>
-                <p className={`mb-4 ${
-                  gameResult === "win" ? "text-emerald-600" : "text-red-600"
+                <p className={`mb-6 text-lg ${
+                  gameResult === "win" ? "text-green-300" : "text-red-300"
                 }`}>
                   {gameResult === "win"
                     ? `恭喜你！经过 ${round} 轮对话，老板满意度达到了 ${currentScore} 分！`
                     : `很遗憾，${round} 轮对话后老板满意度只有 ${currentScore} 分。`}
                 </p>
-                <div className="space-x-2">
+                <div className="flex justify-center space-x-4">
                   <Button 
                     onClick={resetGame} 
-                    className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 px-8 py-3"
                   >
                     重新开始
                   </Button>
-                  <Button variant="outline" onClick={onBack} className="border-slate-300 hover:bg-slate-50">
+                  <Button 
+                    variant="outline" 
+                    onClick={onBack} 
+                    className="border-gray-600 hover:bg-gray-800 text-white px-8 py-3"
+                  >
                     返回主页
                   </Button>
                 </div>
@@ -339,33 +347,39 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
 
         {/* Options */}
         {!gameOver && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {options.map((option, index) => (
               <Button
                 key={index}
                 variant="outline"
                 onClick={() => handleOptionSelect(option)}
                 disabled={isLoading}
-                className="text-left h-auto p-3 whitespace-normal hover:bg-indigo-50 hover:border-indigo-300 border-slate-200 bg-white/70 backdrop-blur-sm"
+                className="text-left h-auto p-4 whitespace-normal hover:bg-gray-800 border-gray-700 bg-gray-900/50 text-white group transition-all"
               >
-                <span className="text-sm">{option.text}</span>
-                <span
-                  className={`ml-2 text-xs px-2 py-1 rounded ${
-                    option.score > 0
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {option.score > 0 ? "+" : ""}{option.score}
-                </span>
+                <div className="flex justify-between items-start">
+                  <span className="text-sm leading-relaxed flex-1 pr-2">{option.text}</span>
+                  <span
+                    className={`ml-2 text-xs px-2 py-1 rounded-full ${
+                      option.score > 0
+                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                        : "bg-red-500/20 text-red-400 border border-red-500/30"
+                    }`}
+                  >
+                    {option.score > 0 ? "+" : ""}{option.score}
+                  </span>
+                </div>
               </Button>
             ))}
           </div>
         )}
 
         {isLoading && (
-          <div className="flex justify-center mt-4">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+          <div className="flex justify-center mt-8">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+            </div>
           </div>
         )}
       </div>

@@ -52,56 +52,124 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8 pt-8">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">哄老板模拟器</h1>
-          <p className="text-lg text-slate-600 mb-2">职场求生指南 · 化解老板怒火的艺术</p>
-          <Badge variant="secondary" className="bg-indigo-100 text-indigo-700 border-indigo-200">
-            极简MVP版
-          </Badge>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <div className="border-b border-gray-800 bg-black/95 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">哄</span>
+              </div>
+              <h1 className="text-xl font-semibold">Boss Coaxing Simulator</h1>
+            </div>
+            <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">
+              极简MVP版
+            </Badge>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              哄老板模拟器
+            </span>
+          </h1>
+          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+            职场求生指南 · 化解老板怒火的艺术
+          </p>
+          <div className="inline-flex items-center px-4 py-2 bg-gray-900 rounded-full border border-gray-700">
+            <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+            <span className="text-sm text-gray-300">AI驱动的职场模拟器</span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Scenarios Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           {scenarios.map((scenario) => (
             <Card
               key={scenario.id}
-              className="hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer border-slate-200 hover:border-indigo-300 bg-white/70 backdrop-blur-sm"
+              className="bg-gray-900/50 border-gray-700 hover:border-orange-500/50 transition-all duration-300 hover:scale-[1.02] cursor-pointer group backdrop-blur-sm"
               onClick={() => handleScenarioSelect(scenario)}
             >
-              <CardHeader className="text-center">
-                <div className="text-4xl mb-2">{scenario.icon}</div>
-                <CardTitle className="text-slate-800">{scenario.title}</CardTitle>
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center text-2xl group-hover:bg-orange-500/20 transition-colors">
+                    {scenario.icon}
+                  </div>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+                <CardTitle className="text-white text-xl">{scenario.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600 text-center">{scenario.description}</p>
+                <p className="text-gray-400 mb-6 leading-relaxed">{scenario.description}</p>
                 <Button
-                  className="w-full mt-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0"
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 h-12 font-medium"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleScenarioSelect(scenario)
                   }}
                 >
                   开始挑战
+                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
                 </Button>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="text-center">
-          <Card className="bg-white/70 backdrop-blur-sm border-slate-200 shadow-lg">
-            <CardContent className="pt-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">游戏规则</h3>
-              <div className="text-sm text-slate-600 space-y-1">
-                <p>• 老板满意度从0分开始，目标是10轮对话内达到100分</p>
-                <p>• 每次选择都会影响老板的情绪，选择要慎重哦</p>
-                <p>• 有些选项看起来很搞笑，但可能让情况更糟糕</p>
-                <p>• 保持职场礼貌，展现你的情商和智慧</p>
+        {/* Game Rules */}
+        <Card className="bg-gray-900/30 border-gray-700 backdrop-blur-sm">
+          <CardContent className="p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center mr-4">
+                <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+              <h3 className="text-2xl font-semibold text-white">游戏规则</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <span className="text-orange-400 text-sm font-bold">1</span>
+                  </div>
+                  <p className="text-gray-300">老板满意度从0分开始，目标是10轮对话内达到100分</p>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <span className="text-orange-400 text-sm font-bold">2</span>
+                  </div>
+                  <p className="text-gray-300">每次选择都会影响老板的情绪，选择要慎重哦</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <span className="text-orange-400 text-sm font-bold">3</span>
+                  </div>
+                  <p className="text-gray-300">有些选项看起来很搞笑，但可能让情况更糟糕</p>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <span className="text-orange-400 text-sm font-bold">4</span>
+                  </div>
+                  <p className="text-gray-300">保持职场礼貌，展现你的情商和智慧</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
