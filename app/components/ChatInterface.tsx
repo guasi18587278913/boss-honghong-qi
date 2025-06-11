@@ -278,21 +278,21 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
       </div>
 
       {/* Messages */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="space-y-6 mb-8">
+      <div className="max-w-4xl mx-auto px-6 py-6">
+        <div className="space-y-4 mb-6">
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
               <div className="flex items-start space-x-3 max-w-3xl">
                 {message.role === "boss" && <BossAvatar />}
                 <div
-                  className={`p-4 rounded-2xl ${
+                  className={`p-3 rounded-2xl ${
                     message.role === "user" 
                       ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" 
                       : "bg-gray-900 text-white border border-gray-700"
                   }`}
                 >
                   <p className="text-sm leading-relaxed">{message.content}</p>
-                  <p className="text-xs mt-2 opacity-70">
+                  <p className="text-xs mt-1 opacity-70">
                     {message.timestamp.toLocaleTimeString()}
                   </p>
                 </div>
@@ -305,20 +305,20 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
 
         {/* Game Over */}
         {gameOver && (
-          <div className="mb-8">
+          <div className="mb-6">
             <Card className={`${
               gameResult === "win" 
                 ? "bg-green-900/30 border-green-700" 
                 : "bg-red-900/30 border-red-700"
             } backdrop-blur-sm`}>
-              <CardContent className="p-8 text-center">
-                <div className="text-6xl mb-4">{gameResult === "win" ? "🎉" : "😵"}</div>
-                <h3 className={`text-2xl font-bold mb-4 ${
+              <CardContent className="p-6 text-center">
+                <div className="text-4xl mb-3">{gameResult === "win" ? "🎉" : "😵"}</div>
+                <h3 className={`text-xl font-bold mb-3 ${
                   gameResult === "win" ? "text-green-400" : "text-red-400"
                 }`}>
                   {gameResult === "win" ? "成功哄好老板！" : "游戏结束"}
                 </h3>
-                <p className={`mb-6 text-lg ${
+                <p className={`mb-4 ${
                   gameResult === "win" ? "text-green-300" : "text-red-300"
                 }`}>
                   {gameResult === "win"
@@ -349,12 +349,12 @@ export default function ChatInterface({ scenario, onBack }: ChatInterfaceProps) 
         {!gameOver && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {options.map((option, index) => (
-              <Button
+                              <Button
                 key={index}
                 variant="outline"
                 onClick={() => handleOptionSelect(option)}
                 disabled={isLoading}
-                className="text-left h-auto p-4 whitespace-normal hover:bg-gray-800 border-gray-700 bg-gray-900/50 text-white group transition-all"
+                className="text-left h-auto p-3 whitespace-normal hover:bg-gray-800 border-gray-700 bg-gray-900/50 text-white group transition-all"
               >
                 <div className="flex justify-between items-start">
                   <span className="text-sm leading-relaxed flex-1 pr-2">{option.text}</span>
